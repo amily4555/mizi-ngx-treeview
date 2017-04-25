@@ -29,7 +29,7 @@ You can customize CSS yourself to break down dependencies to Bootstrap & Font Aw
 
 After install the above dependencies, install `ngx-treeview` via:
 ```shell
-npm install --save ngx-treeview
+npm install --save mizi-ngx-treeview
 ```
 Once installed you need to import our main module in your application module:
 ```js
