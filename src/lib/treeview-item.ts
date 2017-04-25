@@ -7,6 +7,7 @@ export interface TreeItem {
     checked?: boolean;
     selected?: boolean;
     collapsed?: boolean;
+    hidden?: boolean;
     children?: TreeItem[];
 }
 
@@ -15,6 +16,7 @@ export class TreeviewItem {
     private internalChecked = true;
     private internalSelected = false;
     private internalCollapsed = false;
+    private internalHidden = false;
     private internalChildren: TreeviewItem[];
     text: string;
     value: any;
@@ -71,6 +73,18 @@ export class TreeviewItem {
         if (_.isBoolean(value) && this.internalChecked !== value) {
             // if (!this.internalDisabled) {
                 this.internalChecked = value;
+            // }
+        }
+    }
+
+    get hidden(): boolean {
+        return this.internalHidden;
+    }
+
+    set hidden(value: boolean) {
+        if (_.isBoolean(value) && this.internalHidden !== value) {
+            // if (!this.internalDisabled) {
+            this.internalHidden = value;
             // }
         }
     }
@@ -151,7 +165,7 @@ export class TreeviewItem {
             }
             this.internalChildren = value;
             if (!_.isNil(this.internalChildren)) {
-                let checked = true;
+                let checked = false;
                 this.internalChildren.forEach(child => {
                     if (child.checked === false) {
                         checked = false;
@@ -178,6 +192,7 @@ export class TreeviewItem {
             if(maxCount){
                 this.disabled = true;
                 this.collapsed = false;
+                this.hidden = true;
             }
 
             const childCount = this.internalChildren.length;

@@ -12,6 +12,8 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     isShowFilter = true;
     isShowCollapseExpand = false;
     maxHeight = 500;
+    isShowTotal = false;
+    maxCount = 0;
 }
 
 @Component({

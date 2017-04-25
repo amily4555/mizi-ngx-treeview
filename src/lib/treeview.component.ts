@@ -60,9 +60,12 @@ class FilterTreeviewItem extends TreeviewItem {
                     [class.fa-caret-right]="item.collapsed" 
                     [class.fa-caret-down]="!item.collapsed"></i>
                     
-                <label class="form-check-label">
+                <label class="form-check-label" [class.checkbox-hidden]="item.hidden">
                     <input type="checkbox" class="form-check-input"
-                        [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.selected || item.disabled" />
+                        [(ngModel)]="item.checked" 
+                        (ngModelChange)="onCheckedChange()" 
+                        [hidden]="item.hidden"
+                        [disabled]="item.selected || item.disabled" />
                      {{item.text}}
                 </label>
             </div>
@@ -106,6 +109,10 @@ class FilterTreeviewItem extends TreeviewItem {
     margin-top: .3rem;
 }
 .label-item-all {
+}
+
+.checkbox-hidden {
+    padding-left: 0 !important;
 }
 .label-collapse-expand {
     margin: 0;

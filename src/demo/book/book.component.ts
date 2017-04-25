@@ -44,6 +44,7 @@ export class BookComponent implements OnInit {
         isShowFilter: true,
         isShowCollapseExpand: true,
         maxHeight: 500,
+        isShowTotal: false,
         maxCount: 10
     };
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 @Injectable()
 export class TreeviewConfig {
@@ -6,5 +6,18 @@ export class TreeviewConfig {
     isShowFilter = false;
     isShowCollapseExpand = false;
     maxHeight = 500;
-    maxCount? = 0;
+
+    /**
+     * 限制选择个数
+     * limit checked count
+     * @type {number}
+     */
+    maxCount = 0;
+
+    /**
+     * 选中显示形式
+     * checked items show text
+     * @type {boolean}
+     */
+    isShowTotal = false;
 }

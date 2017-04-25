@@ -32,6 +32,8 @@ export class RoomComponent implements OnInit {
         isShowAllCheckBox: true,
         isShowFilter: true,
         isShowCollapseExpand: false,
+        isShowTotal: false,
+        maxCount: 0,
         maxHeight: 500
     };
 
