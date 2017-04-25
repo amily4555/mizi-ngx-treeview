@@ -5,6 +5,7 @@ export interface TreeItem {
     value: any;
     disabled?: boolean;
     checked?: boolean;
+    selected?: boolean;
     collapsed?: boolean;
     children?: TreeItem[];
 }
@@ -12,6 +13,7 @@ export interface TreeItem {
 export class TreeviewItem {
     private internalDisabled = false;
     private internalChecked = true;
+    private internalSelected = false;
     private internalCollapsed = false;
     private internalChildren: TreeviewItem[];
     text: string;
@@ -36,15 +38,22 @@ export class TreeviewItem {
         if (_.isBoolean(item.collapsed)) {
             this.collapsed = item.collapsed;
         }
-        if (this.disabled === true && this.checked === false) {
-            throw new Error('A disabled item must be checked');
+        if (_.isBoolean(item.selected)) {
+            this.selected = item.selected;
         }
+
+        // if (this.disabled === true && this.checked === false) {
+        //     throw new Error('A disabled item must be checked');
+        // }
+
         if (!_.isNil(item.children)) {
             this.children = item.children.map(child => {
-                if (this.disabled === true) {
-                    child.disabled = true;
+                // if (this.disabled === true) {
+                //     child.disabled = true;
+                // }
+                if (this.selected === true) {
+                    child.selected = true;
                 }
-
                 return new TreeviewItem(child);
             });
         }
@@ -60,9 +69,19 @@ export class TreeviewItem {
 
     set checked(value: boolean) {
         if (_.isBoolean(value) && this.internalChecked !== value) {
-            if (!this.internalDisabled) {
+            // if (!this.internalDisabled) {
                 this.internalChecked = value;
-            }
+            // }
+        }
+    }
+
+    get selected(): boolean {
+        return this.internalSelected;
+    }
+
+    set selected(value: boolean) {
+        if (_.isBoolean(value) && this.internalSelected !== value) {
+            this.internalSelected = value;
         }
     }
 
@@ -70,8 +89,20 @@ export class TreeviewItem {
         if (_.isBoolean(value)) {
             if (!this.internalDisabled) {
                 this.internalChecked = value;
+            }
+
+            if (!_.isNil(this.internalChildren)) {
+                this.internalChildren.forEach(child => child.setCheckedRecursive(value));
+            }
+        }
+    }
+
+    setSelectedRecursive(value: boolean) {
+        if (_.isBoolean(value)) {
+            if (!this.internalChecked) {
+                this.internalSelected = value;
                 if (!_.isNil(this.internalChildren)) {
-                    this.internalChildren.forEach(child => child.setCheckedRecursive(value));
+                    this.internalChildren.forEach(child => child.setSelectedRecursive(value));
                 }
             }
         }
@@ -84,9 +115,9 @@ export class TreeviewItem {
     set disabled(value: boolean) {
         if (_.isBoolean(value) && this.internalDisabled !== value) {
             this.internalDisabled = value;
-            if (!_.isNil(this.internalChildren)) {
-                this.internalChildren.forEach(child => child.disabled = value);
-            }
+            // if (!_.isNil(this.internalChildren)) {
+            //     this.internalChildren.forEach(child => child.disabled = value);
+            // }
         }
     }
 
@@ -131,20 +162,33 @@ export class TreeviewItem {
         }
     }
 
-    getCheckedItems(): TreeviewItem[] {
+    getCheckedItems(maxCount: number): any {
         let checkedItems: TreeviewItem[] = [];
+        let allItems: TreeviewItem[] = [];
+
         if (_.isNil(this.internalChildren)) {
+            this.selected = false;
+            allItems.push(this);
+
             if (this.internalChecked) {
                 checkedItems.push(this);
             }
         } else {
+            // maxCount 不为0或空, 则非根节点为disable 不可选择, 必须为展开
+            if(maxCount){
+                this.disabled = true;
+                this.collapsed = false;
+            }
+
             const childCount = this.internalChildren.length;
             for (let i = 0; i < childCount; i++) {
-                checkedItems = _.concat(checkedItems, this.internalChildren[i].getCheckedItems());
+                let item = this.internalChildren[i];
+                checkedItems = _.concat(checkedItems, item.getCheckedItems(maxCount).checkedItems);
+                allItems = _.concat(allItems, item.getCheckedItems(maxCount).allItems);
             }
         }
 
-        return checkedItems;
+        return {checkedItems, allItems};
     }
 
     correctChecked() {

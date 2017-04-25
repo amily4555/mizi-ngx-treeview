@@ -6,4 +6,5 @@ export class TreeviewConfig {
     isShowFilter = false;
     isShowCollapseExpand = false;
     maxHeight = 500;
+    maxCount? = 0;
 }

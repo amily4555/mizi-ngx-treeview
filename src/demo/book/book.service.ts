@@ -16,13 +16,13 @@ export class BookService {
                     text: 'Programming', value: 91, children: [{
                         text: 'Frontend', value: 911, children: [
                             { text: 'Angular 1', value: 9111 },
-                            { text: 'Angular 2', value: 9112 },
-                            { text: 'ReactJS', value: 9113 }
+                            { text: 'Angular 2', value: 9112, checked: false  },
+                            { text: 'ReactJS', value: 9113, checked: false  }
                         ]
                     }, {
                         text: 'Backend', value: 912, children: [
                             { text: 'C#', value: 9121 },
-                            { text: 'Java', value: 9122 },
+                            { text: 'Java', value: 9122, checked: false  },
                             { text: 'Python', value: 9123, checked: false }
                         ]
                     }]
@@ -37,11 +37,11 @@ export class BookService {
         });
         const teenCategory = new TreeviewItem({
             text: 'Teen', value: 2, collapsed: true, disabled: true, children: [
-                { text: 'Adventure', value: 21 },
-                { text: 'Science', value: 22 }
+                { text: 'Adventure-21', value: 21 },
+                { text: 'Science-22', value: 22 }
             ]
         });
-        const othersCategory = new TreeviewItem({ text: 'Others', value: 3, collapsed: true, disabled: true });
+        const othersCategory = new TreeviewItem({ text: 'Others--', value: 'others-3', checked: false, collapsed: true, disabled: true });
         return [childrenCategory, itCategory, teenCategory, othersCategory];
     }
 }

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { TreeviewItem, TreeviewConfig } from 'ngx-treeview';
-import { BookService } from './book.service';
+import {Component, OnInit} from '@angular/core';
+import {TreeviewItem, TreeviewConfig} from 'ngx-treeview';
+import {BookService} from './book.service';
 
 @Component({
     selector: 'ngx-book',
@@ -30,7 +30,8 @@ import { BookService } from './book.service';
         </div>
     </div>
 </div>
-`, providers: [
+`,
+    providers: [
         BookService
     ]
 })
@@ -42,12 +43,12 @@ export class BookComponent implements OnInit {
         isShowAllCheckBox: true,
         isShowFilter: true,
         isShowCollapseExpand: true,
-        maxHeight: 500
+        maxHeight: 500,
+        maxCount: 10
     };
 
-    constructor(
-        private service: BookService
-    ) { }
+    constructor(private service: BookService) {
+    }
 
     ngOnInit() {
         this.items = this.service.getBooks();

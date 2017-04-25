@@ -41,16 +41,19 @@ export class TreeviewItemComponent {
 
     toggleCollapseExpand = () => {
         this.item.collapsed = !this.item.collapsed;
-    }
+    };
 
     onCheckedChange = () => {
         const checked = this.item.checked;
+        const selected = this.item.selected;
         if (!_.isNil(this.item.children)) {
-            this.item.children.forEach(child => child.setCheckedRecursive(checked));
+            this.item.children.forEach(child => {
+                child.setCheckedRecursive(checked);
+            });
         }
 
         this.checkedChange.emit(checked);
-    }
+    };
 
     onChildCheckedChange(child: TreeviewItem, checked: boolean) {
         if (this.item.checked !== checked) {

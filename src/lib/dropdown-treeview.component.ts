@@ -9,44 +9,45 @@ import { TreeviewItemTemplateContext } from './treeview-item-template-context';
 @Component({
     selector: 'ngx-dropdown-treeview',
     template: `
-<div class="dropdown" [class.show]="isOpen">
-    <button class="btn btn-secondary dropdown-toggle" type="button" role="button" (click)="onButtonClick($event)"
-        aria-haspopup="true" aria-expanded="false">
-        {{getText()}}
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" (click)="$event.stopPropagation()">
-        <div class="dropdown-container">
-            <ngx-treeview [items]="items" [template]="template" [config]="config" (selectedChange)="onSelectedChange($event)">
-            </ngx-treeview>
+        <div class="dropdown" [class.show]="isOpen">
+            <button class="btn btn-secondary dropdown-toggle" type="button" role="button" (click)="onButtonClick($event)"
+                aria-haspopup="true" aria-expanded="false">
+                {{getText()}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" (click)="$event.stopPropagation()">
+                <div class="dropdown-container">
+                    <ngx-treeview [items]="items" [template]="template" [config]="config" (selectedChange)="onSelectedChange($event)">
+                    </ngx-treeview>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
     `,
     styles: [`
-.dropdown {
-    width: 100%;
-    display: inline-block;
-}
-.dropdown button {
-    width: 100%;
-    margin-right: .9rem;
-    text-align: left;
-}
-.dropdown button::after {
-    position: absolute;
-    right: .6rem;
-    margin-top: .6rem;
-}
-.dropdown .dropdown-menu .row {
-    padding: 2px 10px;
-}
-.dropdown .dropdown-menu .dropdown-item-collapse-expand {
-    padding: 0;
-}
-.dropdown .dropdown-menu .dropdown-container {
-    padding: 0 .6rem;
-}
-    `]
+        .dropdown {
+            width: 100%;
+            display: inline-block;
+        }
+        .dropdown button {
+            width: 100%;
+            margin-right: .9rem;
+            text-align: left;
+        }
+        .dropdown button::after {
+            position: absolute;
+            right: .6rem;
+            margin-top: .6rem;
+        }
+        .dropdown .dropdown-menu .row {
+            padding: 2px 10px;
+        }
+        .dropdown .dropdown-menu .dropdown-item-collapse-expand {
+            padding: 0;
+        }
+        .dropdown .dropdown-menu .dropdown-container {
+            padding: 0 .6rem;
+        }
+            `
+    ]
 })
 export class DropdownTreeviewComponent {
     @Input() template: TemplateRef<TreeviewItemTemplateContext>;

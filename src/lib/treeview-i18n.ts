@@ -23,7 +23,7 @@ export class TreeviewI18nDefault extends TreeviewI18n {
             case 1:
                 return checkededItems[0].text;
             default:
-                return `${checkededItems.length} options selected`;
+                return `${checkededItems.length} options :::: selected`;
         }
     }
 

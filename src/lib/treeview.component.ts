@@ -1,13 +1,14 @@
-import { Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, TemplateRef } from '@angular/core';
+import {Component, Input, Output, EventEmitter, SimpleChanges, OnChanges, TemplateRef, OnInit} from '@angular/core';
 import * as _ from 'lodash';
-import { TreeviewI18n } from './treeview-i18n';
-import { TreeviewItem } from './treeview-item';
-import { TreeviewConfig } from './treeview-config';
-import { TreeviewEventParser } from './treeview-event-parser';
-import { TreeviewItemTemplateContext } from './treeview-item-template-context';
+import {TreeviewI18n} from './treeview-i18n';
+import {TreeviewItem} from './treeview-item';
+import {TreeviewConfig} from './treeview-config';
+import {TreeviewEventParser} from './treeview-event-parser';
+import {TreeviewItemTemplateContext} from './treeview-item-template-context';
 
 class FilterTreeviewItem extends TreeviewItem {
     private readonly refItem: TreeviewItem;
+
     constructor(item: TreeviewItem) {
         super({
             text: item.text,
@@ -49,53 +50,58 @@ class FilterTreeviewItem extends TreeviewItem {
 @Component({
     selector: 'ngx-treeview',
     template: `
-<ng-template #tpl let-item="item"
-    let-toggleCollapseExpand="toggleCollapseExpand"
-    let-onCheckedChange="onCheckedChange">
-    <div class="form-check">
-        <i *ngIf="item.children" (click)="toggleCollapseExpand()" aria-hidden="true"
-            class="fa" [class.fa-caret-right]="item.collapsed" [class.fa-caret-down]="!item.collapsed"></i>
-        <label class="form-check-label">
-            <input type="checkbox" class="form-check-input"
-                [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.disabled" />
-            {{item.text}}
-        </label>
-    </div>
-</ng-template>
-<div class="treeview-header">
-    <div *ngIf="config.isShowFilter" class="row">
-        <div class="col-12">
-            <input class="form-control" type="text" [placeholder]="i18n.filterPlaceholder()"
-                [(ngModel)]="filterText" (ngModelChange)="onFilterTextChange()" />
-        </div>
-    </div>
-    <div *ngIf="hasFilterItems">
-        <div *ngIf="config.isShowAllCheckBox || config.isShowCollapseExpand" class="row">
-            <div class="col-12" [class.row-margin]="config.isShowFilter && (config.isShowAllCheckBox || config.isShowCollapseExpand)">
-                <label *ngIf="config.isShowAllCheckBox" class="form-check-label label-item-all">
+        <ng-template #tpl let-item="item"
+            let-toggleCollapseExpand="toggleCollapseExpand"
+            let-onCheckedChange="onCheckedChange">
+            <div class="form-check">
+                <i *ngIf="item.children" 
+                    class="fa" 
+                    (click)="toggleCollapseExpand()" aria-hidden="true"
+                    [class.fa-caret-right]="item.collapsed" 
+                    [class.fa-caret-down]="!item.collapsed"></i>
+                    
+                <label class="form-check-label">
                     <input type="checkbox" class="form-check-input"
-                        [(ngModel)]="allItem.checked" (ngModelChange)="onAllCheckedChange($event)" />
-                        {{i18n.allCheckboxText()}}
-                </label>
-                <label *ngIf="config.isShowCollapseExpand" class="pull-right label-collapse-expand" (click)="toggleCollapseExpand()">
-                    <i [title]="i18n.tooltipCollapseExpand(allItem.collapsed)" aria-hidden="true"
-                        class="fa" [class.fa-expand]="allItem.collapsed" [class.fa-compress]="!allItem.collapsed"></i>
+                        [(ngModel)]="item.checked" (ngModelChange)="onCheckedChange()" [disabled]="item.selected || item.disabled" />
+                     {{item.text}}
                 </label>
             </div>
+        </ng-template>
+        <div class="treeview-header">
+            <div *ngIf="config.isShowFilter" class="row">
+                <div class="col-12">
+                    <input class="form-control" type="text" [placeholder]="i18n.filterPlaceholder()"
+                        [(ngModel)]="filterText" (ngModelChange)="onFilterTextChange()" />
+                </div>
+            </div>
+            <div *ngIf="hasFilterItems">
+                <div *ngIf="config.isShowAllCheckBox || config.isShowCollapseExpand" class="row">
+                    <div class="col-12" [class.row-margin]="config.isShowFilter && (config.isShowAllCheckBox || config.isShowCollapseExpand)">
+                        <label *ngIf="config.isShowAllCheckBox" class="form-check-label label-item-all">
+                            <input type="checkbox" class="form-check-input"
+                                [(ngModel)]="allItem.checked" (ngModelChange)="onAllCheckedChange($event)" />
+                                {{i18n.allCheckboxText()}}
+                        </label>
+                        <label *ngIf="config.isShowCollapseExpand" class="pull-right label-collapse-expand" (click)="toggleCollapseExpand()">
+                            <i [title]="i18n.tooltipCollapseExpand(allItem.collapsed)" aria-hidden="true"
+                                class="fa" [class.fa-expand]="allItem.collapsed" [class.fa-compress]="!allItem.collapsed"></i>
+                        </label>
+                    </div>
+                </div>
+                <div *ngIf="config.isShowFilter || config.isShowAllCheckBox || config.isShowCollapseExpand" class="divider"></div>
+            </div>
         </div>
-        <div *ngIf="config.isShowFilter || config.isShowAllCheckBox || config.isShowCollapseExpand" class="divider"></div>
-    </div>
-</div>
-<div class="treeview-container" [style.max-height.px]="maxHeight">
-    <div *ngFor="let item of filterItems">
-        <ngx-treeview-item [item]="item" [template]="template || tpl" (checkedChange)="onItemCheckedChange(item, $event)">
-        </ngx-treeview-item>
-    </div>
-</div>
-<div *ngIf="!hasFilterItems" class="treeview-text">
-    {{i18n.filterNoItemsFoundText()}}
-</div>`,
-    styles: [`
+        <div class="treeview-container" [style.max-height.px]="maxHeight">
+            <div *ngFor="let item of filterItems">
+                <ngx-treeview-item [item]="item" [template]="template || tpl" (checkedChange)="onItemCheckedChange(item, $event)">
+                </ngx-treeview-item>
+            </div>
+        </div>
+        <div *ngIf="!hasFilterItems" class="treeview-text">
+            {{i18n.filterNoItemsFoundText()}}
+        </div>`,
+    styles: [
+        `
 .row-margin {
     margin-top: .3rem;
 }
@@ -121,9 +127,10 @@ class FilterTreeviewItem extends TreeviewItem {
     padding: .3rem 0;
     white-space: nowrap;
 }
-`]
+`
+    ]
 })
-export class TreeviewComponent implements OnChanges {
+export class TreeviewComponent implements OnInit, OnChanges {
     @Input() template: TemplateRef<TreeviewItemTemplateContext>;
     @Input() items: TreeviewItem[];
     @Input() config: TreeviewConfig;
@@ -133,13 +140,20 @@ export class TreeviewComponent implements OnChanges {
     filterItems: TreeviewItem[];
     checkedItems: TreeviewItem[];
 
-    constructor(
-        public i18n: TreeviewI18n,
-        private defaultConfig: TreeviewConfig,
-        private eventParser: TreeviewEventParser
-    ) {
+    constructor(public i18n: TreeviewI18n,
+                private defaultConfig: TreeviewConfig,
+                private eventParser: TreeviewEventParser) {
         this.config = this.defaultConfig;
-        this.allItem = new TreeviewItem({ text: 'All', value: undefined });
+        this.allItem = new TreeviewItem({
+            text: 'All',
+            value: undefined
+        });
+    }
+
+    ngOnInit() {
+        if(this.config.maxCount){
+            this.config.isShowAllCheckBox = false;
+        }
     }
 
     get hasItems(): boolean {
@@ -215,10 +229,28 @@ export class TreeviewComponent implements OnChanges {
 
     private getCheckedItems(): TreeviewItem[] {
         let checkedItems: TreeviewItem[] = [];
+        let allItems: TreeviewItem[] = [];
+        let maxCount = this.config.maxCount;
+
         if (!_.isNil(this.items)) {
             for (let i = 0; i < this.items.length; i++) {
-                checkedItems = _.concat(checkedItems, this.items[i].getCheckedItems());
+                checkedItems = _.concat(checkedItems, this.items[i].getCheckedItems(maxCount).checkedItems);
+                allItems = _.concat(allItems, this.items[i].getCheckedItems(maxCount).allItems);
             }
+
+            if (maxCount) {
+                if(checkedItems.length === maxCount){
+                    allItems.forEach((o)=>{
+                        o.selected = o.checked ? false : true;
+                    });
+                }
+
+                // 预设值, 初始化, 超过个数限制
+                if (checkedItems.length > maxCount) {
+                    throw new Error('selected items more than maxCount');
+                }
+            }
+
         }
 
         return checkedItems;
