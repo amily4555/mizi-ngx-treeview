@@ -13,15 +13,17 @@ You can customize CSS yourself to break down dependencies to Bootstrap & Font Aw
 
 ## Features
 
+* TreeviewConfig 添加 maxCount, isShowTotal
+* maxCount 最多可以选择几项
+* isShowTotal 选中显示结果样式类型
+* 将默认 checked 为选中状态改为 不选中
+* 将默认项为 checked = true 改为 false
+
 * Unlimited tree level
 * State: disabled / collapse, expand
 * Filtering
 * Internationalization (i18n) support
 * Template
-
-## Demo
-
-https://leovo2708.github.io/ngx-treeview/
 
 ## Installation
 
@@ -68,7 +70,9 @@ export class AppModule {
     isShowAllCheckBox: true,
     isShowFilter: false,
     isShowCollapseExpand: false,
-    maxHeight: 500
+    maxHeight: 500,
+    maxCount: 0,
+    isShowTotal: true
 }
 ```
 You can change default configuration easily because TreeviewConfig is injectable.

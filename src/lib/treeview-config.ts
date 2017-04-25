@@ -19,5 +19,5 @@ export class TreeviewConfig {
      * checked items show text
      * @type {boolean}
      */
-    isShowTotal = false;
+    isShowTotal = true;
 }
