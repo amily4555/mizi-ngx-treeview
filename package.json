@@ -1,6 +1,6 @@
 {
-  "name": "ngx-treeview",
-  "version": "0.0.2",
+  "name": "mizi-ngx-treeview",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "An Angular treeview component with checkbox",
   "scripts": {
@@ -34,10 +34,10 @@
   "author": "Leo Vo <leovo2708@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leovo2708/ngx-treeview.git"
+    "url": "git+https://github.com/amily4555/mizi-ngx-treeview.git"
   },
   "bugs": {
-    "url": "https://github.com/leovo2708/ngx-treeview/issues"
+    "url": "https://github.com/amily4555/mizi-ngx-treeview/issues"
   },
   "main": "lib/index.js",
   "module": "lib/index.js",
