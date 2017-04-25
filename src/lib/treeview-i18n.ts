@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TreeviewItem } from './treeview-item';
-import {TreeviewConfig} from 'ngx-treeview';
+import {TreeviewConfig} from './treeview-config';
 
 @Injectable()
 export abstract class TreeviewI18n {
