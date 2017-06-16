@@ -34,7 +34,9 @@ const config: TreeviewConfig = {
     isShowAllCheckBox: true,
     isShowCollapseExpand: true,
     isShowFilter: true,
-    maxHeight: 500
+    maxHeight: 500,
+    maxCount: 0,
+    isShowTotal: true
 };
 
 export let model = {

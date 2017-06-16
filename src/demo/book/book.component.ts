@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {TreeviewItem, TreeviewConfig} from 'ngx-treeview';
 import {BookService} from './book.service';
+import {TreeviewItem} from '../../lib/treeview-item';
+import {TreeviewConfig} from '../../lib/treeview-config';
 
 @Component({
     selector: 'ngx-book',
@@ -22,8 +23,12 @@ import {BookService} from './book.service';
             <label for="book-category" class="col-3 col-form-label">Book category</label>
             <div class="col-9">
                 <div class="d-inline-block">
-                    <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="values = $event"
-                        [disabled]="!enableButton" [ngxDisabledOnSelector]="'button.dropdown-toggle'">
+                    <ngx-dropdown-treeview 
+                        [config]="config" 
+                        [items]="items" 
+                        (selectedChange)="values = $event"
+                        [disabled]="!enableButton" 
+                        [ngxDisabledOnSelector]="'button.dropdown-toggle'">
                     </ngx-dropdown-treeview>
                 </div>
             </div>
@@ -45,7 +50,9 @@ export class BookComponent implements OnInit {
         isShowCollapseExpand: true,
         maxHeight: 500,
         isShowTotal: false,
-        maxCount: 10
+        maxCount: 10,
+        showtype: 'tag',
+        dropWidth: '100%'
     };
 
     constructor(private service: BookService) {

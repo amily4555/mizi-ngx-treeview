@@ -6,6 +6,8 @@ import {TreeviewConfig} from './treeview-config';
 import {TreeviewEventParser} from './treeview-event-parser';
 import {TreeviewItemTemplateContext} from './treeview-item-template-context';
 
+import * as mu from 'mzmu';
+
 class FilterTreeviewItem extends TreeviewItem {
     private readonly refItem: TreeviewItem;
 
@@ -66,15 +68,17 @@ class FilterTreeviewItem extends TreeviewItem {
                         (ngModelChange)="onCheckedChange()" 
                         [hidden]="item.hidden"
                         [disabled]="item.selected || item.disabled" />
-                     {{item.text}}
+                     <span [innerHTML]="item.text"></span>
                 </label>
             </div>
         </ng-template>
         <div class="treeview-header">
             <div *ngIf="config.isShowFilter" class="row">
                 <div class="col-12">
-                    <input class="form-control" type="text" [placeholder]="i18n.filterPlaceholder()"
-                        [(ngModel)]="filterText" (ngModelChange)="onFilterTextChange()" />
+                    <input class="form-control treeview-filter" type="text" 
+                        [placeholder]="i18n.filterPlaceholder()"
+                        [(ngModel)]="filterText" 
+                        (ngModelChange)="onFilterTextChange()" />
                 </div>
             </div>
             <div *ngIf="hasFilterItems">
@@ -96,7 +100,11 @@ class FilterTreeviewItem extends TreeviewItem {
         </div>
         <div class="treeview-container" [style.max-height.px]="maxHeight">
             <div *ngFor="let item of filterItems">
-                <ngx-treeview-item [item]="item" [template]="template || tpl" (checkedChange)="onItemCheckedChange(item, $event)">
+                <ngx-treeview-item 
+                    [item]="item" 
+                    [removeItem]="removeItem"
+                    [template]="template || tpl" 
+                    (checkedChange)="onItemCheckedChange(item, $event)">
                 </ngx-treeview-item>
             </div>
         </div>
@@ -105,35 +113,34 @@ class FilterTreeviewItem extends TreeviewItem {
         </div>`,
     styles: [
         `
-.row-margin {
-    margin-top: .3rem;
-}
-.label-item-all {
-}
-
-.checkbox-hidden {
-    padding-left: 0 !important;
-}
-.label-collapse-expand {
-    margin: 0;
-    padding: 0 .3rem;
-    cursor: pointer;
-}
-.divider {
-    height: 1px;
-    margin: 0.5rem 0;
-    overflow: hidden;
-    background: #000;
-}
-.treeview-container {
-    overflow-x: hidden;
-    overflow-y: auto;
-    padding-right: 18px;
-}
-.treeview-text {
-    padding: .3rem 0;
-    white-space: nowrap;
-}
+            .row-margin {
+                margin-top: .3rem;
+            }
+            .label-item-all {
+            }
+            
+            .checkbox-hidden {
+                padding-left: 0 !important;
+            }
+            .label-collapse-expand {
+                margin: 0;
+                padding: 0 .3rem;
+                cursor: pointer;
+            }
+            .divider {
+                height: 1px;
+                margin: 0.5rem 0;
+                overflow: hidden;
+                background: #000;
+            }
+            .treeview-container {
+                overflow-x: hidden;
+                overflow-y: auto;
+            }
+            .treeview-text {
+                padding: .3rem 0;
+                white-space: nowrap;
+            }
 `
     ]
 })
@@ -141,9 +148,10 @@ export class TreeviewComponent implements OnInit, OnChanges {
     @Input() template: TemplateRef<TreeviewItemTemplateContext>;
     @Input() items: TreeviewItem[];
     @Input() config: TreeviewConfig;
+    @Input() filterText?: string;
+    @Input() removeItem?: TreeviewItem;
     @Output() selectedChange = new EventEmitter<any[]>();
     allItem: TreeviewItem;
-    filterText: string;
     filterItems: TreeviewItem[];
     checkedItems: TreeviewItem[];
 
@@ -158,7 +166,7 @@ export class TreeviewComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        if(this.config.maxCount){
+        if (this.config.maxCount) {
             this.config.isShowAllCheckBox = false;
         }
     }
@@ -176,6 +184,16 @@ export class TreeviewComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+
+        mu.run(changes['filterText'], () => {
+            this.updateFilterItems()
+        });
+
+        mu.run((<any>mu).prop(changes, 'removeItem.currentValue'), (item) => {
+            item.setCheckedRecursive(false);
+            this.raiseSelectedChange();
+        });
+
         const itemsSimpleChange = changes['items'];
         if (!_.isNil(itemsSimpleChange)) {
             this.updateFilterItems();
@@ -207,6 +225,7 @@ export class TreeviewComponent implements OnInit, OnChanges {
     }
 
     onItemCheckedChange(item: TreeviewItem, checked: boolean) {
+
         if (this.allItem.checked !== checked) {
             let allItemChecked = true;
             for (let i = 0; i < this.filterItems.length; i++) {
@@ -246,8 +265,8 @@ export class TreeviewComponent implements OnInit, OnChanges {
             }
 
             if (maxCount) {
-                if(checkedItems.length === maxCount){
-                    allItems.forEach((o)=>{
+                if (checkedItems.length === maxCount) {
+                    allItems.forEach((o)=> {
                         o.selected = o.checked ? false : true;
                     });
                 }

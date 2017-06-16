@@ -20,4 +20,12 @@ export class TreeviewConfig {
      * @type {boolean}
      */
     isShowTotal = true;
+
+    /**
+     * showtype
+     * @type {string}: label, tag
+     */
+    showtype?: string = 'label';
+
+    dropWidth?: string = '100%';
 }
