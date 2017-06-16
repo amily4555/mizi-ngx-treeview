@@ -14,6 +14,8 @@ export class ProductTreeviewConfig extends TreeviewConfig {
     maxHeight = 500;
     isShowTotal = false;
     maxCount = 0;
+    showtype = 'lable';
+    dropWidth = '100%';
 }
 
 @Component({
@@ -77,10 +79,10 @@ export class ProductComponent implements OnInit {
     onSelectedChange(downlineItems: DownlineTreeviewItem[]) {
         this.rows = [];
         downlineItems.forEach(downlineItem => {
-            const item = downlineItem.item;
+            const item = downlineItem['item'];
             const value = item.value;
             const texts = [item.text];
-            let parent = downlineItem.parent;
+            let parent = downlineItem['parent'];
             while (!_.isNil(parent)) {
                 texts.push(parent.item.text);
                 parent = parent.parent;
@@ -93,6 +95,6 @@ export class ProductComponent implements OnInit {
 
     removeItem(item: TreeviewItem) {
         TreeviewHelper.removeItem(item, this.items);
-        this.treeviewComponent.raiseSelectedChange();
+        this.treeviewComponent['raiseSelectedChange']();
     }
 }

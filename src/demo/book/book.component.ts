@@ -60,5 +60,7 @@ export class BookComponent implements OnInit {
 
     ngOnInit() {
         this.items = this.service.getBooks();
+
+        console.debug(this.items);
     }
 }

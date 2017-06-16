@@ -68,7 +68,7 @@ class FilterTreeviewItem extends TreeviewItem {
                         (ngModelChange)="onCheckedChange()" 
                         [hidden]="item.hidden"
                         [disabled]="item.selected || item.disabled" />
-                     <span [innerHTML]="item.text"></span>
+                     <span [innerHTML]="item.displayText || item.text"></span>
                 </label>
             </div>
         </ng-template>

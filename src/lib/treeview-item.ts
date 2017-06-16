@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 
 export interface TreeItem {
     text: string;
+    displayText?: string;
     value: any;
     disabled?: boolean;
     checked?: boolean;
@@ -20,6 +21,7 @@ export class TreeviewItem {
     private internalChildren: TreeviewItem[];
     text: string;
     value: any;
+    displayText: string;
 
     constructor(item: TreeItem, autoCorrectChecked = false) {
         if (_.isNil(item)) {
@@ -31,6 +33,8 @@ export class TreeviewItem {
             throw new Error('A text of item must be string object');
         }
         this.value = item.value;
+        this.displayText = item.displayText;
+
         if (_.isBoolean(item.disabled)) {
             this.disabled = item.disabled;
         }

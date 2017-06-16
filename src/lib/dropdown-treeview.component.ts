@@ -200,9 +200,6 @@ export class DropdownTreeviewComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-
-
-
         // treeview-filter
         (<any>mu).run((<any>mu).prop(changes, 'config.currentValue'), (config) => {
             if(config.showtype === 'tag'){

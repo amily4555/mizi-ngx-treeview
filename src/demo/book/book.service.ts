@@ -5,7 +5,7 @@ export class BookService {
     getBooks(): TreeviewItem[] {
         const childrenCategory = new TreeviewItem({
             text: 'Children', value: 1, collapsed: true, children: [
-                { text: 'Baby 3-5', value: 11 },
+                { text: 'Baby 3-5', value: 11, displayText: 'wawa - 305' },
                 { text: 'Baby 6-8', value: 12 },
                 { text: 'Baby 9-12', value: 13 }
             ]
@@ -15,7 +15,7 @@ export class BookService {
                 {
                     text: 'Programming', value: 91, children: [{
                         text: 'Frontend', value: 911, children: [
-                            { text: 'Angular 1', value: 9111 },
+                            { text: 'Angular 1 ~', value: 9111, displayText: 'Ng1 - Angular' },
                             { text: 'Angular 2', value: 9112, checked: false  },
                             { text: 'ReactJS', value: 9113, checked: false  }
                         ]
