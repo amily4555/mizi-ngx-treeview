@@ -30,7 +30,9 @@ import * as mu from 'mzmu';
                 </label>
                 
                 <input type="text" #input
+                    [placeholder]="treeviewComponent.checkedItems.length ? '' : config.emptyText"
                     [style.width.px]="inputWidth"
+                    [class.empty]="!treeviewComponent.checkedItems.length"
                     (keydown) = "onInputAutoWidth(pre, $event)"
                     (keypress) = "onInputAutoWidth(pre, $event)"
                     [(ngModel)]="filterText" />
@@ -56,11 +58,16 @@ import * as mu from 'mzmu';
     `,
     styles: [
         `
+        :host {
+            display: inline-block;
+            min-width: 220px;
+        }
+
         .type-tag {
             display: inline-block;
             width: 100%;
             padding: .1rem;
-            border: 1px solid #dedede;
+            border: 1px solid #ccc;
             border-radius: 5px;
         }
         
@@ -68,12 +75,12 @@ import * as mu from 'mzmu';
             display: inline-block;
             padding: 3px;
             margin-right: 5px;
-            margin-bottom: 2px;
-            border: 1px solid #dedede;
+            margin-bottom: 1px;
+            border: 1px solid #ccc;
         }
         
         .type-tag label:hover {
-            background: #dedede;
+            background: #ccc;
             cursor: pointer;
         }
         
@@ -81,10 +88,16 @@ import * as mu from 'mzmu';
             font-style: normal;
         }
         
+        .type-tag input.empty {
+            width: 100% !important;
+        }
+        
         .type-tag input {
+            padding: 3px 0;
+            margin-bottom: 1px;
             display: inline-block;
-            width: 15px;
-            border: none;
+            width: 120px;
+            border: 1px solid transparent;
             outline: 0;
             background: transparent;
         }
@@ -94,15 +107,16 @@ import * as mu from 'mzmu';
             position: absolute;
             left: -9999rem;
             top: -9999rem;
-            min-width: 15px;
+            min-width: 120px;
         }
         
         .dropdown-menu {
             width: 100%;
+            min-width: 20rem;
         }
         
         .dropdown-menu ngx-treeview-item:hover  {
-            background: #dedede;
+            background: #ccc;
         }
 
         .dropdown {
@@ -141,7 +155,7 @@ export class DropdownTreeviewComponent implements OnChanges {
     isOpen = false;
     filterText: string;
     removeItem: TreeviewItem;
-    inputWidth: number = 15;
+    inputWidth: number = 120;
 
     private mouseEvent: MouseEvent;
 
@@ -153,13 +167,22 @@ export class DropdownTreeviewComponent implements OnChanges {
 
     @HostListener('keyup.esc') onKeyupEsc() {
         this.isOpen = false;
+        this.filterText = null;
     }
+
     @HostListener('document:click', ['$event']) onDocumentClick(event: MouseEvent) {
         if (this.mouseEvent !== event) {
             this.isOpen = false;
+            this.filterText = null;
         }
     }
 
+    @HostListener('keydown.backspace', ['$event']) onKeyupDelete(event: MouseEvent) {
+        if(!this.filterText){
+            let item = this.treeviewComponent.checkedItems.pop();
+            this.removeTagItem(item);
+        }
+    }
 
     get hasItems(): boolean {
         return !_.isNil(this.items) && this.items.length > 0;
@@ -200,9 +223,11 @@ export class DropdownTreeviewComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+
         // treeview-filter
         (<any>mu).run((<any>mu).prop(changes, 'config.currentValue'), (config) => {
-            if(config.showtype === 'tag'){
+            this.config = mu.extend(true, mu.clone(this.defaultConfig), config);
+            if (config.showtype === 'tag') {
                 this.config.isShowFilter = false;
                 this.config.isShowCollapseExpand = false;
             }

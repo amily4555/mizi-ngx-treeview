@@ -28,4 +28,6 @@ export class TreeviewConfig {
     showtype?: string = 'label';
 
     dropWidth?: string = '100%';
+
+    emptyText?: string = 'SELECT OPTIONS...';
 }

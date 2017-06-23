@@ -20,7 +20,7 @@ export class TreeviewI18nDefault extends TreeviewI18n {
             }
             switch (checkededItems.length) {
                 case 0:
-                    return 'SELECT OPTIONS';
+                    return config.emptyText;
                 case 1:
                     return checkededItems[0].text;
                 default:
@@ -29,7 +29,7 @@ export class TreeviewI18nDefault extends TreeviewI18n {
         } else {
             switch (checkededItems.length) {
                 case 0:
-                    return 'SELECT OPTIONS';
+                    return config.emptyText;
                 default:
                     return checkededItems.map((o) => {
                         return o.text;

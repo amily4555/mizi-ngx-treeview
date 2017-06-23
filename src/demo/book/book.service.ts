@@ -5,9 +5,9 @@ export class BookService {
     getBooks(): TreeviewItem[] {
         const childrenCategory = new TreeviewItem({
             text: 'Children', value: 1, collapsed: true, children: [
-                { text: 'Baby 3-5', value: 11, displayText: 'wawa - 305' },
-                { text: 'Baby 6-8', value: 12 },
-                { text: 'Baby 9-12', value: 13 }
+                { text: 'Baby 3-5', value: 11, displayText: 'wawa - 305', checked: false },
+                { text: 'Baby 6-8', value: 12, checked: false },
+                { text: 'Baby 9-12', value: 13, checked: false }
             ]
         });
         const itCategory = new TreeviewItem({
@@ -15,13 +15,13 @@ export class BookService {
                 {
                     text: 'Programming', value: 91, children: [{
                         text: 'Frontend', value: 911, children: [
-                            { text: 'Angular 1 ~', value: 9111, displayText: 'Ng1 - Angular' },
+                            { text: 'Angular 1 ~', value: 9111, displayText: 'Ng1 - Angular', checked: false },
                             { text: 'Angular 2', value: 9112, checked: false  },
                             { text: 'ReactJS', value: 9113, checked: false  }
                         ]
                     }, {
                         text: 'Backend', value: 912, children: [
-                            { text: 'C#', value: 9121 },
+                            { text: 'C#', value: 9121, checked: false },
                             { text: 'Java', value: 9122, checked: false  },
                             { text: 'Python', value: 9123, checked: false }
                         ]
@@ -29,8 +29,8 @@ export class BookService {
                 },
                 {
                     text: 'Networking', value: 92, children: [
-                        { text: 'Internet', value: 921 },
-                        { text: 'Security', value: 922 }
+                        { text: 'Internet', value: 921, checked: false },
+                        { text: 'Security', value: 922, checked: false }
                     ]
                 }
             ]
