@@ -12,14 +12,21 @@ export class TreeviewConfig {
      * limit checked count
      * @type {number}
      */
-    maxCount = 0;
+    maxCount: number = 0;
+
+    /**
+     * 显示区域显示个数
+     * @type {number}
+     */
+    selectedCount?: number = 0;
+    selectedText?: string = '{0} OPTIONS SELECTED';
 
     /**
      * 选中显示形式
      * checked items show text
      * @type {boolean}
      */
-    isShowTotal = true;
+    isShowTotal?: boolean = true;
 
     /**
      * showtype

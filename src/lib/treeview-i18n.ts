@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TreeviewItem } from './treeview-item';
 import {TreeviewConfig} from './treeview-config';
+import * as mu from 'mzmu';
 
 @Injectable()
 export abstract class TreeviewI18n {
@@ -14,17 +15,20 @@ export abstract class TreeviewI18n {
 @Injectable()
 export class TreeviewI18nDefault extends TreeviewI18n {
     getText(checkededItems: TreeviewItem[], isAll: boolean, config: TreeviewConfig): string {
-        if(config.isShowTotal){
+        if(config.selectedCount){
             if (isAll) {
-                return 'All';
+                return mu.format(config.selectedText, 'ALL');
             }
-            switch (checkededItems.length) {
-                case 0:
+
+            switch (true) {
+                case checkededItems.length === 0:
                     return config.emptyText;
-                case 1:
-                    return checkededItems[0].text;
+                case checkededItems.length < config.selectedCount:
+                    return checkededItems.map((o) => {
+                        return o.text;
+                    }).join(', ');
                 default:
-                    return `${checkededItems.length} OPTIONS SELECTED`;
+                    return mu.format(config.selectedText, checkededItems.length);
             }
         } else {
             switch (checkededItems.length) {
