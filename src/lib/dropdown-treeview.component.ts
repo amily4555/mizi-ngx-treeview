@@ -226,7 +226,7 @@ export class DropdownTreeviewComponent implements OnChanges {
 
         // treeview-filter
         (<any>mu).run((<any>mu).prop(changes, 'config.currentValue'), (config) => {
-            this.config = mu.extend(true, mu.clone(this.defaultConfig), config);
+            this.config = mu.extend(true, {}, mu.clone(this.defaultConfig), config);
             if (config.showtype === 'tag') {
                 this.config.isShowFilter = false;
                 this.config.isShowCollapseExpand = false;
